@@ -29,10 +29,11 @@ github_username:  boyazeno
 # Build settings
 #theme: just-the-docs
 remote_theme: just-the-docs/just-the-docs
-color_scheme: "dark"
+#color_scheme: "dark"
 search_enabled: true
 plugins:
   - jekyll-feed
+
 
 # Aux links for the upper right navigation
 aux_links:
