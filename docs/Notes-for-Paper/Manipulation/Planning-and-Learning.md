@@ -83,13 +83,18 @@ TASK-PLANNING
 * Use the learned graph do planning, take acceptable time.
 
 ## How
+![cppf_voting](/blog/assets/PPGS_model.png){: width="600" }
 * Define world as MDP.
 * Use `conv` extract features -> hidden state $$z_t$$ -> latent space.
 * Use **forward model** to get next hidden state from current state and action: $$z_{t+1}=f(a_t, z_t)$$ 
 * Use **inverse model** to prevent model collapse: get possible action based on $$z_1$$ and $$z_2$$.
 * Check if state is the same by compare `distance` of 2 latent spaces. Introduce margin loss $$L$$ aims to make $$z_t$$ and $$z_{t+1}$$ as different as possible. Help differ states. (doubt)
+* Directly use bfs search on latent space.
 
 ## Thinking
 * Continue -> discret representation seems to be easy learned and used.
 * Graph representation could be connected with semantic and high level features
 * What could the popular semantic describtion in rgb image do with this? Some real time graph building? Like SLAM based scan?
+* How to make sure the latent state is distributed in a " uniformly" in latent space? The different between each states could be small. 
+* Use traditional searching method on a "seems like continuous" space. 
+* Circle like self checking makes things happened.
