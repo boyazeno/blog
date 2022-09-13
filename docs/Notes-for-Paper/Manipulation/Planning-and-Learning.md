@@ -98,3 +98,28 @@ TASK-PLANNING
 * How to make sure the latent state is distributed in a " uniformly" in latent space? The different between each states could be small. 
 * Use traditional searching method on a "seems like continuous" space. 
 * Circle like self checking makes things happened.
+
+
+---
+
+# Risk-Averse Zero-Order Trajectory Optimization **CoRL2021**
+<div markdown="1">
+TRAJECTORY-OPTIMIZATION
+{: .label .label-blue }  
+</div>
+
+[Link to paper](https://openreview.net/pdf?id=WqUl7sNkDre)
+
+## Why?
+* In sequential discision-making problem, data-driven method hard to train. And it's kind of anti-human intention
+* Traditional MPC use higher order info of trajectory = high time consuming -> not easy for real time 
+* Model based method is predictable/controlable in sense of uncertainty.
+
+## What's new?
+* Considering difference between uncertainty caused by **system noise** and **lack of knowledge**
+* Compare with PETS method
+
+## How?
+
+## Thinking
+
