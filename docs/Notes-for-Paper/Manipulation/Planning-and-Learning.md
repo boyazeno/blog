@@ -106,6 +106,8 @@ TASK-PLANNING
 <div markdown="1">
 TRAJECTORY-OPTIMIZATION
 {: .label .label-blue }  
+ALEATORIC-EPISTEMIC
+{: .label .label-blue } 
 </div>
 
 [Link to paper](https://openreview.net/pdf?id=WqUl7sNkDre)
@@ -123,3 +125,83 @@ TRAJECTORY-OPTIMIZATION
 
 ## Thinking
 
+
+---
+
+# Deep Reinforcement Learning in a Handful of Trials using Probabilistic Dynamics Models (PE-TS)**2018**
+<div markdown="1">
+TRAJECTORY-OPTIMIZATION
+{: .label .label-blue }  
+ALEATORIC-EPISTEMIC
+{: .label .label-blue }  
+MDP
+{: .label .label-blue }  
+</div>
+
+[Link to paper](https://arxiv.org/abs/1805.12114)
+
+## Why?
+* Model based RL could easily outperform Data-based RL with fewer samples.
+* Data based RL trend to convergent to better level compare to model based RL
+* 2 types of uncertainty is imporant for RL: Aleatoric(noise), Epistemic(recognition)
+* GP process don't fit well with large data
+
+## What's new?
+* Combine both method
+* Propose probabilistic ensembles with trajectory sampling(PETS)
+* Get uncertainty representation from ensembled dynamic model
+* Learning transfer function of MDP. Use MPC to find the best action (w.r.t. accumlated reward) given current state and transfer function within T steps. 
+* During MPC calculating best action, use sampling method to get the best predicted action sequence. Also use [CEM](https://www.researchgate.net/publication/279242256_Chapter_3_The_Cross-Entropy_Method_for_Optimization) to constrain action sample range.  
+
+## How?
+### Learning Aleatoric & Epistemic
+Aleatoric uncertainty is caused dy the system noise, etc, which exist inside sampled data. It can be learned by NN model directly: **NN learning parameter of distribution, but NN could still be deterministic**.
+
+Epistemic uncertainty is exist due to ***the lack of sufficient data to uniquely determine the underlying system exactly***. It can be learned by "ensemble" multiple networks. 
+
+Author defined 3 different NN:
+
+**Probabilistic neural networks (P):**
+
+This is a very normal deterministic NN, but named as "probabilistic NN", because it learns the parameters to describe a distribution. 
+If we model the transfer function in MDP as an gaussian distribution (means for each state-action pair $$s_{t},a_{t}$$, the next state $$s_{t+1}$$ is determined by a specific gauss distribution): 
+
+$$L(\theta)=-\sum_{n=1}^{N}log\tilde{f_\theta} (s_{n+1}|s_{n},a_{n} )$$
+
+, where the distribution could be gauss: 
+
+$$f=Pr(s_{n+1}|s_{n},a_{n})=N(\mu_\theta (s_{n},a_{n}), \Sigma_\theta (s_{n},a_{n}))$$
+
+***Problem: For out-of-distribution input, the output value could be arbitrary***
+
+
+**Deterministic neural networks (D):**
+
+This is the same as above, just replace the output from learning the distribution to learning the exact next state. This actually could be understand as a special case of (P) using delta distribution, but not using gauss distribution.
+
+
+**Ensembles (DE and PE):**
+
+Use several deterministic/probabilistic NN with same base model, but just trained with different subset of samples. The final distribution are denoted by average of each model $$\tilde{f_\theta} = \frac{1}{B}\sum_{b=1}^{B}\tilde{f_\theta}_b$$, where $$B$$ is the number of ensembled models. The result could look like this:
+
+![cppf_voting](/blog/assets/planning-and-learning-ensumble.png){: width="300" }
+
+### Trajectory Sampling:
+At begin of each trial, P number of particals will be initialized. The next state of each of them will be sampled by one of the $$\tilde{f}_{\theta_{b(p,t)}}(s_t^P,a_t^P)$$ sampled from ensembled-NNs. 
+
+Author introduced 2 types of sampling method:
+> TS1 refers to particles uniformly re-sampling a bootstrap per time step.
+
+In TS1, at each new time step, each partical will rechoose a ensemble for sampling next state (regardless which ensemble-NN was used before).
+
+> TS∞ refers to particle bootstraps never changing during a trial.
+
+In TS∞, since the first time sampling, the ensemble-NN for each partical is fixed. That means, every state transfer for each partical is only using the same f.
+
+> An advantage of using TS∞ is that aleatoric and epistemic uncertainties are separable
+
+Because each partical are separated.
+
+***But at the end, it look like the ***
+
+## Thinking
