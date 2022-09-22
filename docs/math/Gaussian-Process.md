@@ -60,5 +60,4 @@ Because the conditional distribution of multi-variant gaussian distribution is s
 ```python
 
 ```
-[reference](如何通俗易懂地介绍 Gaussian Process？ - 石溪的回答 - 知乎
-https://www.zhihu.com/question/46631426/answer/1735470753)
+[reference](https://www.zhihu.com/question/46631426/answer/1735470753)
