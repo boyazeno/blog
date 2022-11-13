@@ -85,9 +85,47 @@ constexpr std::vector<int> x2={1,2,3}; // compile error: initilizer_list constru
 
 constexpr std::array<int,3> x3{1,2,3};    // good: std::array doesn't use dynamic memory allocation, it is allocated in stack
 
-constexpr int x5 = x3.size(); // good: x3 is calculated during compiliation, thus size is a constexpr.
+constexpr int x5 = x3.size(); // good: x3 is calculated during compilation, thus size is a constexpr.
 
 std::vector<int> x4;
 x4.push_back(1);
 constexpr int x6 = x4.size(); // compile error: x4 could not be calculated in compiler
+```
+
+## Different between `auto&&` and `const auto&`
+```cpp
+auto&& a = funcReturnAnyValue();
+const auto& b = funcReturnAnyValue();
+```
+Both of them will bind to any type of value.
+
+But `auto&&` will keep the type no matter what it is, e.g. rvalue, lvalue, reference, const or non-const.
+
+For `const auto&`, it will add const to any type it accept.
+
+
+## Get type of a variable
+`decltype` could be used to get the real type of given variable.
+```cpp
+const string& a{"a"};
+decltype(a) b{"b"};
+std::cout<< std::is_same<decltype(a), const string&>::value; // 1
+std::cout<< std::is_same<decltype(a), string>::value;        // 0
+```
+But if you want the base class, you could use `std::decay`
+```cpp
+const string& a{"a"};
+decltype(a) b{"b"};
+std::cout<< std::is_same<std::decay<decltype(a)>::type, string>::value; // 1
+```
+
+Also, for base type comparsion, `typeid` could be used.
+
+But for full type comparsion, please use `std::is_same<>::value`.
+
+```cpp
+const string& a{"a"};
+string b{"b"};
+
+std::cout<< (typeid(a) == typeid(string));        // 1
 ```
