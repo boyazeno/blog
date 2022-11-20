@@ -129,3 +129,101 @@ string b{"b"};
 
 std::cout<< (typeid(a) == typeid(string));        // 1
 ```
+
+
+## Use case for weak_ptr
+In c++17 weak_ptr are imported. The core feature for `weak_ptr` is able to observe an object  without take over control.
+
+One use case is when `shared_ptr` are iterativly included in 2 class. Both of them could not be deleted due to having control of each other at the same time.
+
+```cpp
+#include <memory>
+struct People;
+struct City
+{
+  std::string name;
+  std::shared_ptr<People> mayor; // Change to std::weak_ptr<People> mayor;
+  City(const std::string& name):name(name){}
+  ~City(){printf("Delete city %s\n", name.data());}
+  void setMayor(std::shared_ptr<People>& people){mayor = people;}
+};
+
+struct People
+{
+  std::string name;
+  std::shared_ptr<City> home;
+  People(const std::string& name):name(name){}
+  ~People(){printf("Delete people %s\n", name.data());}
+  void setHome(std::shared_ptr<City>& city){home = city;}
+};
+
+int main()
+{
+  auto city = std::make_shared<City>("my_city");
+  auto mayor = std::make_shared<People>("my_man");
+  city->setMayor(mayor);
+  mayor->setHome(city);
+
+  return 0;
+}
+// Suppose to print:
+// Delete people my_man
+// Delete city my_city
+// But due to the nesting structure, neither city nor mayor could be deleted first after program quit.
+
+// Solution, change shared_ptr to weak_ptr.
+// Because weak_ptr won't increase mayor->use_count(). So mayor could be deleted directly after use.
+```
+
+In order to get control of the weak_ptr, you have to call explicitly:
+```cpp
+std::shared_ptr<MyClass> my_class_sptr;
+std::weak_ptr<MyClass> my_class_wptr{my_class_sptr};
+std::shared_ptr<MyClass>  my_class_wptr_control = my_class_wptr.lock();
+```
+
+## Use structured bindings to get value from tuple, pair, map, array:
+After c++17, structured bindings could be used to easily get control of elements in both `copy, const, &, const&` way.
+
+Even public class member could be bind in this way.
+```cpp
+#include <iostream>
+#include <vector>
+#include <tuple>
+#include <map>
+
+int main()
+{
+  // case 1
+  {
+    std::tuple<int,std::string> my_tuple{1,"a"};
+    const auto [a,b] = my_tuple;
+    std::cout<<a<<b<<std::endl; //print: 1a
+  }
+  // case 2
+  {
+    std::map<int, std::string> my_map{{1,"a"},{2,"b"}};
+
+    // Read single
+    auto [a,b] = *(++my_map.begin());
+    std::cout<<a<<b<<std::endl; //print: 2b
+    
+    // Read iteratively
+    for(const auto & [i,j] : my_map)
+    {
+        std::cout<<i<<j<<std::endl; 
+    }
+    // print: 1a
+    // print: 2b
+  }
+  
+  // case 3
+  {
+      std::string my_array[2]{"a","b"};
+      auto [a,b] = my_array;
+      std::cout<<a<<b; //print: ab
+  }
+
+  return 0;
+}
+```
