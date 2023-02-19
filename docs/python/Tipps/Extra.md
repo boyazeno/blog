@@ -41,7 +41,7 @@ By each dim, using notation `:` means keep the whole dimension, which essntially
 **Attention**
 If mix basic indexing and advance indexing, there is a detail to be awared.
 > The advanced indices are separated by a slice, Ellipsis or newaxis. For example x[arr1, :, arr2].
-> The advanced indices are all next to each other. For example x[..., arr1, arr2, :] but not x[arr1, :, 1] since 1 is an advanced index in this regard. (source)[https://numpy.org/devdocs/user/basics.indexing.html#combining-advanced-and-basic-indexing]
+> The advanced indices are all next to each other. For example x[..., arr1, arr2, :] but not x[arr1, :, 1] since 1 is an advanced index in this regard. [source](https://numpy.org/devdocs/user/basics.indexing.html#combining-advanced-and-basic-indexing)
 
 For the spearated case, dimension from `:, ..., newaxis` will be appended at the end with order.
 

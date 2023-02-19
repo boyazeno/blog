@@ -52,7 +52,26 @@ kill -s SIGABRT ${pgrep my_program}
 * Debug with core-dump
 
 ## Reference
-* (managing core dumps)[https://www.baeldung.com/linux/managing-core-dumps]
+* [managing core dumps](https://www.baeldung.com/linux/managing-core-dumps)
+
+
+# SSH connection
+## What is this
+A safter way to connect to other server. SSH could provide terminal connection, remote-desk connection, reverse/tunneling, etc.
+
+## HOW-TO
+### Basic
+
+### Use SSH as proxy in browser
+
+## Notice
+### Safety
+
+
+## Reference
+* [why are some ports risky and how do you secure them](https://www.howtogeek.com/devops/why-are-some-ports-risky-and-how-do-you-secure-them/)
+
+
 
 # Cron in Linux
 ## What is this
@@ -97,7 +116,7 @@ Attacker will navigate to `/etc/cron.d` folder and use the core dump file genera
 
 ## Reference
 
-* (cron jobs and crontab on linux explained)[https://devconnected.com/cron-jobs-and-crontab-on-linux-explained/]
-* (privilege escalation attack use cron)[https://en.wikipedia.org/wiki/Privilege_escalation]
+* [cron jobs and crontab on linux explained](https://devconnected.com/cron-jobs-and-crontab-on-linux-explained/)
+* [privilege escalation attack use cron](https://en.wikipedia.org/wiki/Privilege_escalation)
 
 
