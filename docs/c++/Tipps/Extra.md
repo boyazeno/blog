@@ -202,7 +202,7 @@ int main()
   }
   // case 2
   {
-    std::map<int, std::string> my_map{{1,"a"},{2,"b"}};
+    std::map<int, std::string> my_map{ {1,"a"},{2,"b"} };
 
     // Read single
     auto [a,b] = *(++my_map.begin());
