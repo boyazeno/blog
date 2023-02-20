@@ -43,16 +43,74 @@ kill -s SIGABRT ${pgrep my_program}
 
 ## How-TO
 
-* Save core-dump to a file
+### Save core-dump to a file
+* Set block size for core dump file
 ```sh
+# 1. Get your chunk size
+# where %s means only show chunk size.
+# stat will show a lot of file/dir info
+# -f means using format, which allows special character like %s
+stat -fc %s .
+
+# 2. Calculate max chunks you want for all core dump files
+# chunk number for 1 MB = 1*1024*1024 / chunk_size
+
+# 3. Set max size
+sudo vim /etc/security/limits.conf
+# Add 2 lines as hard limit + soft limit for specified user/group
+# usr_name hard core chunk_number
+# usr_name soft core chunk_number
+# e.g.
+musterman hard Core 1280
+musterman soft Core 1280
+
+# 4. Reboot
+reboot
+
+# 5. Check size
+ulimit -c
 ```
-* Handle core-dump
+
+Or, a easy way is to set limit to unlimit:
 ```sh
+ulimit -c unlimited
+```
+
+
+* Set core dump file name pattern
+```sh
+# sudo sysctl -w kernel.core_pattern="your pattern"
+# e.g.
+sudo sysctl -w kernel.core_pattern="/tmp/core_dump.%e.%p"
+# %e is program name
+# %p is pid
+
+# If give file name as pattern, then file will be saved with the name under current dir
+
+# Now the core dump file will be saved with name to given position.
+```
+Alternatively, you could also change in `core_pattern` file directly
+```sh
+# This will write core.%e.%p to /proc/sys/kernel/core_pattern
+# This means everytime generate files with this pattern
+# The default pattern inside is usually start with |, 
+# means run the command after | with fixed pattern.
+sudo bash -c 'echo core.%e.%p > /proc/sys/kernel/core_pattern' 
+```
+
+
+
+### Handle core-dump
+* Debug using gdb with know core dump file
+```sh
+# This will print out in which part core dump was occured
+gdb <executable_file> <core_dumpe_file> 
 ```
 * Debug with core-dump
 
 ## Reference
 * [managing core dumps](https://www.baeldung.com/linux/managing-core-dumps)
+* [debugging core dump segementation fault gpd](https://www.bogotobogo.com/cplusplus/debugging_core_memory_dump_segmentation_fault_gdb.php)
 
 
 # SSH connection
