@@ -178,3 +178,11 @@ Attacker will navigate to `/etc/cron.d` folder and use the core dump file genera
 * [privilege escalation attack use cron](https://en.wikipedia.org/wiki/Privilege_escalation)
 
 
+# English Usage:
+It is worth noting: 值得注意的是
+Sth1 shed some light on sth2:  sth1 揭示了 sth2
+substantially: 可观的，大量的
+attaining: 获得
+asymptotic performance: 渐进特性（即收敛后的结果）
+under-appreciated detail: 被忽视的， 未被重视的 细节
+monotonically: 单调的

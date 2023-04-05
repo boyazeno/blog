@@ -145,6 +145,7 @@ MDP
 * Data based RL trend to convergent to better level compare to model based RL
 * 2 types of uncertainty is imporant for RL: Aleatoric(noise), Epistemic(recognition)
 * GP process don't fit well with large data
+* Learning one time, should be able to plan multiple times.
 
 ## What's new?
 * Combine both method
@@ -152,6 +153,7 @@ MDP
 * Get uncertainty representation from ensembled dynamic model
 * Learning transfer function of MDP. Use MPC to find the best action (w.r.t. accumlated reward) given current state and transfer function within T steps. 
 * During MPC calculating best action, use sampling method to get the best predicted action sequence. Also use [CEM](https://www.researchgate.net/publication/279242256_Chapter_3_The_Cross-Entropy_Method_for_Optimization) to constrain action sample range.  
+* Result: Prob Ensamble>Prob>Determi Ensamble>Determi
 
 ## How?
 ### Learning Aleatoric & Epistemic
@@ -159,7 +161,7 @@ Aleatoric uncertainty is caused dy the system noise, etc, which exist inside sam
 
 Epistemic uncertainty is exist due to ***the lack of sufficient data to uniquely determine the underlying system exactly***. It can be learned by "ensemble" multiple networks. 
 
-Author defined 3 different NN:
+Author defined 3 different NN (since the model selection for learning world model is critic):
 
 **Probabilistic neural networks (P):**
 
@@ -187,7 +189,8 @@ Use several deterministic/probabilistic NN with same base model, but just traine
 ![cppf_voting](/blog/assets/planning-and-learning-ensumble.png){: width="300" }
 
 ### Trajectory Sampling:
-At begin of each trial, P number of particals will be initialized. The next state of each of them will be sampled by one of the $$\tilde{f}_{\theta_{b(p,t)}}(s_t^P,a_t^P)$$ sampled from ensembled-NNs. 
+They defined B (=5) ensambled models (trained with different part of the data) and P (=20) samples.
+At begin of each trial, P number of particals will be initialized. The next state of each of them will be sampled by one of the $$\tilde{f}_{\theta_{b(p,t)}}(s_t^P,a_t^P)$$ sampled from ensembled-NNs. All samples will be sampled with the same action $$a_t$$, but with world_predication function from different ensambled models.
 
 Author introduced 2 types of sampling method:
 > TS1 refers to particles uniformly re-sampling a bootstrap per time step.
@@ -202,6 +205,21 @@ In TS∞, since the first time sampling, the ensemble-NN for each partical is fi
 
 Because each partical are separated.
 
-***But at the end, it look like the ***
+### Baseline:
+For comparison with TS method, three other method are method: 
+> Expectation(E): This simply use the average value of $$s_{t+1}$$ from all samples as the predicted next state.
+> Moment matching(MM): Each sample will still use different model b and same action $$a_t$$ to make thier own prediction of next state. An approximated normal distribution will be matched using predictions from all samples. The final next state for each sample p will be resampled from this distribution.
+> Distribution sampling(DS): Since MM approximate distribution of next state with only one peak (too strict), DS approximate distribution of next state using sample predictions $$s_{t+1}^{p}$$ for each ensamble b. 
+
+### CEM:
+CEM here is used as action sampler.
+
+Core idea of CEM for optimization is: **find the best matching proxi-distribution w.r.t. target-distribution through some stoastic process.** The comparison uses cross-entropy. But the target-distribution is unknown. So sampling method are used to get a blick of the target-distribution.
+
+Main step consists: (link)[The Cross-Entropy Method A Unified Approach to Combinatorial Optimization, Monte-Carlo Simulation, and Machine Learning ]
+1. Use certain strategy generate samples.(e.g. guass distribution)
+2. Calculate and rank the target value (through trial)
+3. Get the top k values and its corresponded samples, update parameters of strategy. (Recalculate  $$\mu$$ and $$\sigma$$).
+4. Redo 1-3 until $$\sigma$$ is small enough.(for optimzation)
 
 ## Thinking
