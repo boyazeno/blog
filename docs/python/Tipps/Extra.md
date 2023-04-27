@@ -88,3 +88,15 @@ greeter.greet = types.MethodType(say_hello, greeter)
 greeter.greet() # Prints "Hello, Sir Robin!"
 ```
 [reference](https://stackoverflow.com/questions/70538009/how-do-you-attach-a-function-to-an-instance-of-a-class)
+
+
+## How to convert between dict and Namespace in argparse
+```python
+import argparse
+# To namespace
+my_dict = {"param":"value"}
+ns = argparse.Namespace(**my_dict)
+
+# To dict
+my_dict = vars(ns)
+```
