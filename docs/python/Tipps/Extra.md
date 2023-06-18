@@ -69,3 +69,34 @@ print(orig_mat[:, :, F_idx, N_idx].shape) # B*C*1*nC*1*nN, advanced indexing all
 print(orig_mat[B_idx, C_idx, :, N_idx].shape) # nB*nC*nS*1*F, advanced indexing separated by basic indexing
 print(orig_mat[B_idx, :, F_idx, N_idx].shape) # nB*1*1*nN*C, advanced indexing separated by basic indexing
 ```
+
+## How to add method function to a class outside defination
+Use `types.MethodType(func, instance)`, this could add functions with `self` argument.
+
+```python
+import types
+
+def say_hello(self):
+    print(f"Hello, {self.name}!")
+
+class Greeter:
+    def __init__(self, name):
+        self.name = name
+
+greeter = Greeter("Sir Robin")
+greeter.greet = types.MethodType(say_hello, greeter)
+greeter.greet() # Prints "Hello, Sir Robin!"
+```
+[reference](https://stackoverflow.com/questions/70538009/how-do-you-attach-a-function-to-an-instance-of-a-class)
+
+
+## How to convert between dict and Namespace in argparse
+```python
+import argparse
+# To namespace
+my_dict = {"param":"value"}
+ns = argparse.Namespace(**my_dict)
+
+# To dict
+my_dict = vars(ns)
+```

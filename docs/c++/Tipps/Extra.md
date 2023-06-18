@@ -227,3 +227,9 @@ int main()
   return 0;
 }
 ```
+
+## C++ Cheat Sheet
+please see [here](https://github.com/gibsjose/cpp-cheat-sheet)
+
+* [C++ Data Structures and Algorithms Cheat Sheet](https://github.com/gibsjose/cpp-cheat-sheet/blob/master/Data%20Structures%20and%20Algorithms.md)
+* [C++ Syntax Cheat Sheet](https://github.com/gibsjose/cpp-cheat-sheet/blob/master/C%2B%2B%20Syntax.md)
