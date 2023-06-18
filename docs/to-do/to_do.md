@@ -186,3 +186,51 @@ attaining: 获得
 asymptotic performance: 渐进特性（即收敛后的结果）
 under-appreciated detail: 被忽视的， 未被重视的 细节
 monotonically: 单调的
+preliminary: 初步的
+unprecedented: 史无前例的
+discrepancy: 差异，不同
+to this end: 为此，因此
+To the best of our knowledge: 尽我们所能
+, where sth denotes sth: （用于表达次公式是用表达某个变量的...） 
+which is referred to as: 被称作
+expound/elaborate/discribe: 陈述，描述
+be disentangled: 被分解为
+superscript: 上标
+omitted: 被省略
+conforms xx distribution: 符合...分布
+fidelity: 保真度
+
+
+# Large Language Model:
+
+## Model
+### vicuna 13B
+Fined tuned based on LLaMA with shared ChatGPT data on ShareGPT.
+
+**Self-Instruct**: A project that use existed language model and 175 seed instruction tasks to automatically generate more instruction-based conversation data. Use these data to improve language model's instruction following ability.
+
+**Stanford Alpaca**: A project that fined tuned based on LLaMA with 52k instruction-following data. But it rewrite some prompt.
+
+Trained using **SkyPilot**: Build training process with unified interface, available on multi-platform.
+
+**FastChat** github 可安装 不同版本。 
+
+### LLaMA
+
+### gpt4-x-alpaca
+
+
+## Concepts:
+### 字节对编码 (BPE) 算法:
+Used in Tokenizer by LLaMA.
+
+### SentencePiece:
+
+### Prompt:
+Use pre-defined natural language template to guide LM creating desired output.
+
+E.g. one prompt could be : `{input} is so {label}.`. During fine tuning, the input could be a paragraph of comment, while the label could be the description of this comment, e.g. good, bad.  
+
+(Link)[https://zhuanlan.zhihu.com/p/438766871]
+
+
