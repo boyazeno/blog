@@ -61,19 +61,15 @@ Problem:
 - env
 
 * Save a replay-buffer at each learner -> reduce comunication 
-* 
-* 
-
-![cppf_voting](/blog/assets/PPGS_model.png){: width="600" }
-## Representations
+* Asynchronize the data/network transfer between actor<->v learner<->p learner (use Ray for parallelization)
+* Throttle the relative updating frequency (add extra hyper parameters), try to exploit the time (but convergence performance better?)
+* Add noise with step-wise amplitude to action command, save fine tune time for sigma.
 
 
 ## Thinking
-1. 
-2. 
-
-
-
-
+1. Why N num of env matters? (matters if the update of Q is good enough or not? Overfitting of policy should encourage exploration or not?) If it try to exploit GPU usage, smaller N => higher update times for fixed amount of value. (the update per wall-clock time should not change too much, means performance should be the same?)
+2. Compare mainly on wall-clock time but not steps.
+3. Large batch size good for learning.
+3. Good paper for engineering
 
 
