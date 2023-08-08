@@ -100,3 +100,20 @@ ns = argparse.Namespace(**my_dict)
 # To dict
 my_dict = vars(ns)
 ```
+
+
+## What is each type in custom named array?
+The shortened string format codes may seem confusing, but they are built on simple principles. **The first (optional) character is < or >, which means "little endian" or "big endian," respectively**, and specifies the ordering convention for significant bits. The next character specifies the type of data: characters, bytes, ints, floating points, and so on (see the table below). The last character or characters represents the size of the object in bytes.
+
+```
+Character	Description	Example:
+ 'b'	Byte	np.dtype('b')
+ 'i'	Signed integer	np.dtype('i4') == np.int32
+ 'u'	Unsigned integer	np.dtype('u1') == np.uint8
+ 'f'	Floating point	np.dtype('f8') == np.int64
+ 'c'	Complex floating point	np.dtype('c16') == np.complex128
+ 'S', 'a'	String	np.dtype('S5')
+ 'U'	Unicode string	np.dtype('U') == np.str_
+ 'V'	Raw data (void)	np.dtype('V') == np.void
+```
+[link](https://jakevdp.github.io/PythonDataScienceHandbook/02.09-structured-data-numpy.html)

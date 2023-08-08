@@ -72,4 +72,8 @@ Problem:
 3. Large batch size good for learning.
 3. Good paper for engineering
 
+## Summary:
+* 8 times update for Q value per action update is good.
+* Exploration with different noise level for each env ($$a_{real}=a_{calc}+(0.2,0.4,0.8,1.0)*\sigma$$) during data collection is good. 
+
 
